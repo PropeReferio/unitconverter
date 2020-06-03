@@ -1,24 +1,7 @@
-# import json
+#!/usr/bin/env python
+
 import click
 from graph import g
-
-# with open('conversions.json', 'r') as f:
-#     datastore = json.load(f)  #something about closing files after you're 
-    #done... does "with" autoclose?
-
-#Instantiates the Graph
-# g = Graph()
-
-# #Adds units, edges, and cfactors (weights)
-# for conv in datastore:
-#     g.add_edge(conv[0], conv[1], conv[2])
-
-#Print statements to check that it worked:
-# for k, v in g.unit_dict.items():
-#     for neighbor, cfactor in v.adjacent.items():
-#         print('Unit: {}, Neighbor: {}, Cfactor: {}'.format(k, neighbor.name, cfactor))
-valid = False
-nopath = False
 
 def BFS_cfactor(start, stop, graph):
     '''Begins at one unit/vertex (start), finds the shortest path to the final
@@ -41,7 +24,6 @@ def BFS_cfactor(start, stop, graph):
                     visited.add(node)
                     queue.append((node, cfactor * graph.unit_dict[unit].adjacent[node]))
     #If the queue empties...
-    nopath = True
     return False
 
 @click.command()

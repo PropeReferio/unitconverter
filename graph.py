@@ -35,27 +35,6 @@ class Graph():
         #This is key. Make sure you've inverted the correct cfactor.
         #I'm confident this is correct.
 
-# Everything above will build a complete graph. Then we just need a BFS that
-# gets the product of all the cfactors during traversal.
-
-# units = [
-#     ["foot", "inch", 12],
-#     ["inch", "centimeter", 2.54],
-#     ["meter", "centimeter", 100],
-#     ["inch", "mile", 0.00001578282],
-#     ["gallon", "pint", 8],
-#     ["teaspoon", "cubic_foot", 0.000174063],
-#     ["tablespoon", "teaspoon", 3],
-#     ["cubic_foot", "milliliter", 28316.8],
-#     ["liter", "milliliter", 1000],
-#     ["liter", "gallon", 0.264],
-#     ["lightyear", "mile", 5.879e+12],
-#     ["hour", "minute", 60],
-#     ["minute", "second", 60],
-#     ["day", "second", 86400],
-#     ["year", "day", 365]
-# ]
-
 with open('conversions.json', 'r') as f:
     datastore = json.load(f)  #something about closing files after you're 
     #done... does "with" autoclose?
