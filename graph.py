@@ -1,3 +1,5 @@
+import json
+
 class Unit():
     def __init__(self, name):
         self.name = name
@@ -36,30 +38,41 @@ class Graph():
 # Everything above will build a complete graph. Then we just need a BFS that
 # gets the product of all the cfactors during traversal.
 
-units = [
-    ["foot", "inch", 12],
-    ["inch", "centimeter", 2.54],
-    ["meter", "centimeter", 100],
-    ["inch", "mile", 0.00001578282],
-    ["gallon", "pint", 8],
-    ["teaspoon", "cubic_foot", 0.000174063],
-    ["tablespoon", "teaspoon", 3],
-    ["cubic_foot", "milliliter", 28316.8],
-    ["liter", "milliliter", 1000],
-    ["liter", "gallon", 0.264],
-    ["lightyear", "mile", 5.879e+12],
-    ["hour", "minute", 60],
-    ["minute", "second", 60],
-    ["day", "second", 86400],
-    ["year", "day", 365]
-]
+# units = [
+#     ["foot", "inch", 12],
+#     ["inch", "centimeter", 2.54],
+#     ["meter", "centimeter", 100],
+#     ["inch", "mile", 0.00001578282],
+#     ["gallon", "pint", 8],
+#     ["teaspoon", "cubic_foot", 0.000174063],
+#     ["tablespoon", "teaspoon", 3],
+#     ["cubic_foot", "milliliter", 28316.8],
+#     ["liter", "milliliter", 1000],
+#     ["liter", "gallon", 0.264],
+#     ["lightyear", "mile", 5.879e+12],
+#     ["hour", "minute", 60],
+#     ["minute", "second", 60],
+#     ["day", "second", 86400],
+#     ["year", "day", 365]
+# ]
 
-#Instantiate the Graph
+with open('conversions.json', 'r') as f:
+    datastore = json.load(f)  #something about closing files after you're 
+    #done... does "with" autoclose?
+
+#Instantiates the Graph
 g = Graph()
 
-#Add units and edges to Graph
-for conv in units:
+# #Adds units, edges, and cfactors (weights)
+for conv in datastore:
     g.add_edge(conv[0], conv[1], conv[2])
+#Instantiate the Graph
+
+# g = Graph()
+
+# #Add units and edges to Graph
+# for conv in units:
+#     g.add_edge(conv[0], conv[1], conv[2])
 
 #Checks that units were added with correct cfactors
 # for k, v in g.unit_dict.items():
