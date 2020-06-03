@@ -1,4 +1,5 @@
 import json
+import click
 from graph import Graph, Unit
 
 with open('conversions.json', 'r') as f:
@@ -49,11 +50,24 @@ def BFS_cfactor(start, stop, graph):
 
 # print(BFS_cfactor('mile', 'foot', g))
 
-def convert(original: str, converted: str, n: int) -> int:
+@click.command()
+@click.argument('original')
+@click.argument('converted')
+@click.option('--quantity', '-q', default=1, help='The quantity of original\
+units to be converted to final units.')
+def convert(original, converted, quantity):
     '''Takes as arguments the unit to convert from (original), the amount of 
-    that unit (n), and the unit to convert to (converted), and outputs the 
-    amount of that final unit.'''
-    return n * BFS_cfactor(original, converted, g)
+    that unit (quantity), and the unit to convert to (converted), and outputs 
+    the amount of that final unit.'''
+    print(BFS_cfactor(original, converted, g))
+    final = quantity * BFS_cfactor(original, converted, g)
+    print(final)
+    click.echo(final)
+    # click.echo(float(n) * BFS_cfactor(original, converted, g))
 
-print(convert('meter', 'centimeter', 15))
+# def display_conversion():
+#     click.echo()
+# print(convert('meter', 'centimeter', 15))
 
+if __name__ == '__main__':
+    convert()
