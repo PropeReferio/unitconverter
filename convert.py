@@ -1,39 +1,59 @@
 import json
+from graph import Graph, Unit
 
 with open('conversions.json', 'r') as f:
     datastore = json.load(f)  #something about closing files after you're 
     #done... does "with" autoclose?
 
-print(datastore)
+#Instantiates the Graph
+g = Graph()
+
+#Adds units, edges, and cfactors (weights)
+for conv in datastore:
+    g.add_edge(conv[0], conv[1], conv[2])
+
+#Print statements to check that it worked:
+# for k, v in g.unit_dict.items():
+#     for neighbor, cfactor in v.adjacent.items():
+#         print('Unit: {}, Neighbor: {}, Cfactor: {}'.format(k, neighbor.name, cfactor))
+
+def BFS_cfactor(start, stop, graph):
+    '''Begins at one unit/vertex (start), finds the shortest path to the final
+    unit/vertex (stop), and returns the conversion factor between those two
+    units (the product of all the cfactors (weights) that were traversed).'''
+    active = True
+    if start not in graph.unit_dict.keys():
+        print("{} is not a valid input.".format(start))
+        active = False
+    if stop not in graph.unit_dict.keys():
+        print("{} is not a valid input.".format(stop))
+        active = False
+    if not active:
+        return False #Or other error message of some kind.
+    
+    queue = [(start, 1)] 
+    visited = set()
+
+    while queue:
+        unit, cfactor = queue.pop(0)
+        visited.add(unit)
+        for node in graph.unit_dict[unit].adjacent.keys(): #Need keys or items or something
+            if node == stop:
+                return cfactor * graph.unit_dict[unit].adjacent[stop]
+            else:
+                if node not in visited:
+                    visited.add(node)
+                    queue.append((node, cfactor * graph.unit_dict[unit].adjacent[node]))
+    #If the queue empties...
+    return 'No path found from {} to {}.'.format(start, stop)
+
+# print(BFS_cfactor('mile', 'foot', g))
 
 def convert(original: str, converted: str, n: int) -> int:
     '''Takes as arguments the unit to convert from (original), the amount of 
     that unit (n), and the unit to convert to (converted), and outputs the 
     amount of that final unit.'''
-    # I think I need graph theory, to go from foot to centimeter, for example.
-    # Multiply when going from index 0 to 1, Divide when going from 1 to 0.
-    # Maybe I should convert this into 1 or more dictionaries? I.e.,
-    'footinch': 12,
-    'inchfoot': 0.0833333,
-    #By using a dictionary, I don't have to loop over the list like a fool
-    #every time I run the program, looping multiple times to get convert 
-    #between units with no direct link in the json.
-    #Doing it this way would require making every possible unit conversion,
-    #however, i.e. 'footcentimeter', 'yearsecond'. This could take a lot of
-    #time. But would I really have to do it that way? Or could I combine this
-    #string concatenation with an adjacency list of some sort so that the
-    #program understands automatically to convert first to inches, and then to
-    #centimeters?
-    #If I make a cache of every single possible unit conversion and save that
-    #as a cache just one time, that dictionary would be available to all users
-    #of the program forever. Will W20 accept this method?
+    return n * BFS_cfactor(original, converted, g)
 
-    #To use this, you would concatenate original and converted, and then simply
-    #use that as a key in said dictionary, get the value (an int/float), and
-    #multiply it by n. That would be the output.
-
-    #Step 1: Make the program work as you always have.
-    #Step 2: Create a CLI which passes arguments to your function. Consider
-    #Making a very simple CLI with simple function first to make learning
-    #easy.
+print(convert('meter', 'centimeter', 15))
 
