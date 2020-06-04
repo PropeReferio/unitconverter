@@ -7,7 +7,7 @@
 3. Using a terminal in the program's directory, run `pip install -r requirements.txt`
 4. Mark files as executable: `run chmod +x convert list`
 5. Add to path: run `echo 'export PATH=$PATH":$HOME/bin"' >> .profile`
-6. Restart the terminal, and run the program as described below.
+6. Run `source .profile.`
 
 ## Running the CLI
 1. To see a list of available units, simply run `list`.
