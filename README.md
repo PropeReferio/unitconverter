@@ -4,7 +4,7 @@
 
 ## Installation
 
-1. Download this file to your home directory.
+1. Extract bin.zip to your home directory.
 2. If you like, activate your virtual environment.
 3. Using a terminal in the program's directory, run `pip install -r requirements.txt`
 4. Mark files as executable: run `chmod +x convert list`
