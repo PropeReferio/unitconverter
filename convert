@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+import click
+from graph import g
+
+def BFS_cfactor(start, stop, graph):
+    '''Begins at one unit/vertex (start), finds the shortest path to the final
+    unit/vertex (stop), and returns the conversion factor between those two
+    units (the product of all the cfactors (weights) that were on the shortest
+    path).'''
+    queue = [(start, 1)] 
+    visited = set()
+
+    while queue:
+        unit, cfactor = queue.pop(0)
+        visited.add(unit)
+        for node in graph[unit]:
+        #For each tuple in the list that is the value pair to the key unit:
+            if node[0] == stop:
+                return cfactor * node[1]
+            else:
+                if node[0] not in visited:
+                    visited.add(node[0])
+                    queue.append((node[0], cfactor * node[1]))
+    #If the queue empties...
+    return False
+
+#CLI stuff
+@click.command()
+@click.option('--quantity', '-q', default=1, type=float, help='The quantity of original\
+units to be converted to final units.')
+@click.argument('original')
+@click.argument('converted')
+def convert(quantity, original, converted):
+    '''Takes as arguments the unit to convert from (original), the amount of 
+    that unit (quantity), and the unit to convert to (converted), and outputs 
+    the amount of that final unit.'''
+    valid = True
+    if original not in g.keys():
+        print("{} is not a valid input.".format(original))
+        valid = False
+    if converted not in g.keys():
+        print("{} is not a valid input.".format(converted))
+        valid = False
+    if quantity == 0:
+        click.echo('There are 0 {}(s) in 0 {}(s).'.format(converted, original))
+        return
+    if quantity < 0:
+        click.echo('Negative lengths, volumes, and time cannot be converted.')
+        return
+    if not valid:
+        return
+    final = quantity * BFS_cfactor(original, converted, g)
+    if not final:
+        click.echo('{}(s) cannot be converted to {}(s)'.format(original, converted))
+    else:
+        click.echo('There are {} {}(s) in {} {}(s).'.format(final, converted, quantity, original))
+
+if __name__ == '__main__':
+    convert()

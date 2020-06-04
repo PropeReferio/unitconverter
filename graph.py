@@ -8,6 +8,10 @@ with open('conversions.json', 'r') as f:
 
 g = {}
 for conv in datastore:
+    #Fills in dict. Creates k/v pairs if they don't already exist, otherwise
+    #the value (a list) is appended to.
+    #Keys are strings of units, values are lists of tuples of neighboring
+    #units and conversion factors.
     if conv[0] not in g.keys():
         g[conv[0]] = [(conv[1], conv[2])]
     else:
