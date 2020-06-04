@@ -1,5 +1,7 @@
 #unitconverter
 
+![Screenshot](/converter.png "Optional Title")
+
 ## Installation
 
 1. Download this file to your home directory.
