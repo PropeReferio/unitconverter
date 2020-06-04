@@ -16,16 +16,19 @@ def BFS_cfactor(start, stop, graph):
         #with each movement between nodes.
         unit, cfactor = queue.pop(0)
         visited.add(unit)
-        for node in graph.unit_dict[unit].adjacent.keys():
-            if node == stop:
-                return cfactor * graph.unit_dict[unit].adjacent[stop]
+        for node in graph[unit]:
+        #For each tuple in the list that is the value pair to the key unit:
+            if node[0] == stop:
+                return cfactor * node[1]
             else:
-                if node not in visited:
-                    visited.add(node)
-                    queue.append((node, cfactor * graph.unit_dict[unit].adjacent[node]))
+                if node[0] not in visited:
+                    visited.add(node[0])
+                    queue.append((node[0], cfactor * node[1]))
     #If the queue empties...
     return False
+    #Can I delete the line above, and have a None value below?
 
+#CLI stuff
 @click.command()
 @click.option('--quantity', '-q', default=1, help='The quantity of original\
 units to be converted to final units.')
@@ -37,10 +40,10 @@ def convert(quantity, original, converted):
     the amount of that final unit.'''
     final = quantity * BFS_cfactor(original, converted, g)
     valid = True
-    if original not in g.unit_dict.keys():
+    if original not in g.keys():
         print("{} is not a valid input.".format(original))
         valid = False          # Should I move these to try and except stuff somewhere?
-    if converted not in g.unit_dict.keys():
+    if converted not in g.keys():
         print("{} is not a valid input.".format(converted))
         valid = False
     if not valid:

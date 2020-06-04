@@ -3,10 +3,10 @@
 import click
 from graph import g
 
-@click.command()
+@click.command() #I think I can remove click from this file.
 def main():
     print('\n The following units are available: \n')
-    for unit in g.unit_dict.keys():
+    for unit in g.keys():
         print(unit)
     print('\n')
 
